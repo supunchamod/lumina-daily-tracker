@@ -76,8 +76,7 @@ class User extends Authenticatable
     public function badges(): BelongsToMany
     {
         return $this->belongsToMany(Badge::class, 'badge_user')
-                    ->withPivot('awarded_at')
-                    ->withTimestamps();
+                    ->withPivot('awarded_at');
     }
 
     // ─── Gamification helpers ──────────────────────────────────────────
@@ -99,17 +98,29 @@ class User extends Authenticatable
     }
 
     /**
-     * XP needed to reach the next level.
+     * XP needed to reach the next level from the user's current XP.
      */
     public function xpToNextLevel(): int
     {
-        $nextLevel = $this->level + 1;
-        return $this->xpThresholdForLevel($nextLevel) - $this->xp;
+        return $this->xpThresholdForLevel($this->level + 1) - $this->xp;
+    }
+
+    /**
+     * Returns [xpStart, xpEnd] for the current level — used by the
+     * profile progress bar to show progress within the current level only.
+     *
+     * @return array{int, int}
+     */
+    public function xpRangeForCurrentLevel(): array
+    {
+        return [
+            $this->xpThresholdForLevel($this->level),
+            $this->xpThresholdForLevel($this->level + 1),
+        ];
     }
 
     private function calculateLevel(int $xp): int
     {
-        // Level formula: each level requires level * 100 XP cumulatively
         $level = 1;
         while ($xp >= $this->xpThresholdForLevel($level + 1)) {
             $level++;
@@ -117,9 +128,10 @@ class User extends Authenticatable
         return $level;
     }
 
-    private function xpThresholdForLevel(int $level): int
+    public function xpThresholdForLevel(int $level): int
     {
-        // Threshold = sum of 100 * n for n = 1..level-1 → level*(level-1)/2 * 100
+        // Cumulative XP formula: level*(level-1)/2 * 100
+        // Level 1 → 0, Level 2 → 100, Level 3 → 300, Level 4 → 600 …
         return (int) ($level * ($level - 1) / 2 * 100);
     }
 

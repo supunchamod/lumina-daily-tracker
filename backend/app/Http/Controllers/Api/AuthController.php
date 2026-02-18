@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\XpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,11 +44,15 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials.'], 401);
         }
 
-        $user = Auth::user();
+        $user      = Auth::user();
+        $xpResult  = app(XpService::class)->awardDailyLogin($user);
+        $user->refresh();
 
         return response()->json([
-            'user'  => $user,
-            'token' => $user->createToken('lumina-spa')->plainTextToken,
+            'user'       => $user,
+            'token'      => $user->createToken('lumina-spa')->plainTextToken,
+            'xp_gained'  => $xpResult['xp_gained'],
+            'new_badges' => $xpResult['new_badges'],
         ]);
     }
 

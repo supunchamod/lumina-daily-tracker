@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import AppLayout      from './components/layout/AppLayout'
-import LoginPage      from './pages/LoginPage'
-import RegisterPage   from './pages/RegisterPage'
-import DashboardPage  from './pages/DashboardPage'
+import AppLayout        from './components/layout/AppLayout'
+import LoginPage        from './pages/LoginPage'
+import RegisterPage     from './pages/RegisterPage'
+import DashboardPage    from './pages/DashboardPage'
+import ProfilePage      from './pages/ProfilePage'
+import LeaderboardPage  from './pages/LeaderboardPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,8 +24,9 @@ export default function App() {
 
           {/* Protected (AppLayout redirects to /login if not authenticated) */}
           <Route element={<AppLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            {/* TODO: add /habits, /tasks, /rewards pages */}
+            <Route path="/dashboard"   element={<DashboardPage />} />
+            <Route path="/profile"     element={<ProfilePage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
           </Route>
 
           {/* Default redirect */}

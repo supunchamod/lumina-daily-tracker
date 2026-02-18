@@ -1,13 +1,15 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, Flame, CheckSquare, Gift, LogOut } from 'lucide-react'
+import { LayoutDashboard, Flame, CheckSquare, Gift, Trophy, User, LogOut } from 'lucide-react'
 import useAuthStore from '../../stores/authStore'
 import XpBar from '../ui/XpBar'
 
 const navItems = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/habits',    icon: Flame,           label: 'Habits'    },
-  { to: '/tasks',     icon: CheckSquare,     label: 'Tasks'     },
-  { to: '/rewards',   icon: Gift,            label: 'Rewards'   },
+  { to: '/dashboard',   icon: LayoutDashboard, label: 'Dashboard'   },
+  { to: '/habits',      icon: Flame,           label: 'Habits'      },
+  { to: '/tasks',       icon: CheckSquare,     label: 'Tasks'       },
+  { to: '/rewards',     icon: Gift,            label: 'Rewards'     },
+  { to: '/profile',     icon: User,            label: 'Profile'     },
+  { to: '/leaderboard', icon: Trophy,          label: 'Leaderboard' },
 ]
 
 export default function Sidebar() {

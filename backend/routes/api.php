@@ -3,11 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\HabitController;
-use App\Http\Controllers\Api\TaskController;
-use App\Http\Controllers\Api\RewardController;
-use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DailyLogController;
+use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\HabitController;
+use App\Http\Controllers\Api\LeaderboardController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RewardController;
+use App\Http\Controllers\Api\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
 
     // Dashboard (XP, level, streak)
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard',    [DashboardController::class,  'index']);
+    Route::get('/profile',      [ProfileController::class,    'show']);
+    Route::get('/leaderboard',  [LeaderboardController::class,'index']);
 
     // Habits
     Route::apiResource('habits', HabitController::class);

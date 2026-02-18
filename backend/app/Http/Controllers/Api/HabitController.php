@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Habit;
+use App\Services\XpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -70,13 +71,17 @@ class HabitController extends Controller
     {
         $this->authorize('update', $habit);
 
-        $user = $request->user();
+        $user     = $request->user();
         $habit->markCompleted();
-        $user->awardXp($habit->xp_reward);
+        $xpResult = app(XpService::class)->award($user, $habit->xp_reward);
+        $user->refresh();
 
         return response()->json([
-            'habit' => $habit->fresh(),
-            'user'  => $user->fresh(['xp', 'level', 'streak']),
+            'habit'      => $habit->fresh(),
+            'user'       => $user->only('xp', 'level', 'streak'),
+            'xp_gained'  => $xpResult['xp_gained'],
+            'leveled_up' => $xpResult['leveled_up'],
+            'new_badges' => $xpResult['new_badges'],
         ]);
     }
 }

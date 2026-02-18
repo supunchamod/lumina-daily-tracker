@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Services\XpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -74,13 +75,17 @@ class TaskController extends Controller
             return response()->json(['message' => 'Task already completed.'], 422);
         }
 
-        $user = $request->user();
+        $user     = $request->user();
         $task->update(['is_completed' => true, 'completed_at' => now()]);
-        $user->awardXp($task->xp_reward);
+        $xpResult = app(XpService::class)->award($user, $task->xp_reward);
+        $user->refresh();
 
         return response()->json([
-            'task' => $task->fresh(),
-            'user' => $user->fresh(['xp', 'level', 'streak']),
+            'task'       => $task->fresh(),
+            'user'       => $user->only('xp', 'level', 'streak'),
+            'xp_gained'  => $xpResult['xp_gained'],
+            'leveled_up' => $xpResult['leveled_up'],
+            'new_badges' => $xpResult['new_badges'],
         ]);
     }
 }
