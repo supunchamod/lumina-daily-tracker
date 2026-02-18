@@ -1,0 +1,29 @@
+# ── OS / Editor ──────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# ── Backend (Laravel) — never commit secrets ─────────────────────────────
+backend/.env
+backend/.env.*.local
+backend/vendor/
+backend/node_modules/
+backend/public/hot
+backend/public/storage
+backend/storage/*.key
+backend/bootstrap/cache/*.php
+backend/.phpunit.result.cache
+backend/storage/logs/
+
+# ── Frontend (React / Vite) ───────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
