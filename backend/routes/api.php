@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\HabitController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\RewardController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\DailyLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Rewards (shop / redeemable items)
     Route::apiResource('rewards', RewardController::class);
     Route::post('/rewards/{reward}/redeem', [RewardController::class, 'redeem']);
+
+    // Daily Logs
+    Route::get('/daily-logs/today',   [DailyLogController::class, 'today']);
+    Route::post('/daily-logs/water',  [DailyLogController::class, 'updateWater']);
 });

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import DailyReflection  from './DailyReflection'
 import NotesSection     from './NotesSection'
 import GratitudeJournal from './GratitudeJournal'
+import WaterTracker     from './WaterTracker'
 
 // ─── Mood data ──────────────────────────────────────────────────────────────
 const MOODS = [
@@ -23,35 +24,6 @@ const WEATHERS = [
 
 // ─── Day labels ───────────────────────────────────────────────────────────────
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-
-// ─── Water tracker ───────────────────────────────────────────────────────────
-function WaterTracker() {
-  const [glasses, setGlasses] = useState(0)
-  const TOTAL = 8
-
-  return (
-    <div className="kawaii-card bg-[#BEE9FD]/30">
-      <h3 className="text-center font-bold text-sm text-[#3D2A52] mb-3">
-        💧 Water Intake
-      </h3>
-      <div className="flex justify-center gap-1.5 flex-wrap">
-        {Array.from({ length: TOTAL }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setGlasses(i + 1 === glasses ? i : i + 1)}
-            className={`text-2xl transition-all duration-300 rounded-lg p-1 cursor-pointer
-              ${i < glasses ? 'scale-110 drop-shadow-md' : 'opacity-40 hover:opacity-70 hover:scale-105'}`}
-          >
-            {i < glasses ? '💧' : '🫗'}
-          </button>
-        ))}
-      </div>
-      <p className="text-center text-xs text-[#8B6BAE] mt-2 font-semibold">
-        {glasses}/{TOTAL} glasses 🌊
-      </p>
-    </div>
-  )
-}
 
 // ─── Sleep tracker ───────────────────────────────────────────────────────────
 function SleepTracker() {
