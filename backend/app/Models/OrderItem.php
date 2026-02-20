@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class OrderItem extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'order_id',
+        'lottery_id',
+        'quantity',
+        'unit_price',
+        'ticket_numbers',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'unit_price'     => 'decimal:2',
+            'ticket_numbers' => 'array',
+            'quantity'       => 'integer',
+        ];
+    }
+
+    // ─── Relationships ────────────────────────────────────────────────────
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function lottery(): BelongsTo
+    {
+        return $this->belongsTo(Lottery::class);
+    }
+
+    // ─── Helpers ──────────────────────────────────────────────────────────
+
+    public function lineTotal(): float
+    {
+        return (float) $this->unit_price * $this->quantity;
+    }
+}

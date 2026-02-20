@@ -22,6 +22,7 @@ class User extends Authenticatable
         'streak',
         'last_active_date',
         'avatar',
+        'is_admin',
     ];
 
     protected $hidden = [
@@ -35,10 +36,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
             'last_active_date'  => 'date',
+            'is_admin'          => 'boolean',
         ];
     }
 
     // ─── Relationships ─────────────────────────────────────────────────
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 
     public function habits(): HasMany
     {
